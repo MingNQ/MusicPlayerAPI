@@ -1,23 +1,17 @@
-﻿namespace MusicPlayer.Api.Boostraping;
+﻿using MusicPlayer.Core.Interfaces;
+using MusicPlayer.Core.Services;
+using MusicPlayer.Infrastructure.Repositories;
+
+namespace MusicPlayer.Api.Boostraping;
 
 public static class ApplicationServiceExtensions
 {
-    public static IHostApplicationBuilder AddApplicationServices(this IHostApplicationBuilder builder)
+    public static IServiceCollection AddApplicationServices(this IServiceCollection services)
     {
-        builder.Services.AddControllers();
-        // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-        builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen();
+        services.AddScoped<IAuthService, AuthService>();
 
-        builder.Services.AddApiVersioning(
-            options =>
-            {
-                options.ReportApiVersions = true;
-                options.ApiVersionReader = ApiVersionReader.Combine(
-                    new UrlSegmentApiVersionReader(),
-                    new HeaderApiVersionReader("X-Version"));
-            });
+        services.AddTransient<IAuthRepository, AuthRepository>();
 
-        return builder;
+        return services;
     }
 }
