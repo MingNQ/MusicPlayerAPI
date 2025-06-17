@@ -1,7 +1,4 @@
-﻿using MusicPlayer.Api.Models;
-using MusicPlayer.Core.Entities.General;
-
-namespace MusicPlayer.Api.Controllers;
+﻿namespace MusicPlayer.Api.Controllers;
 
 [ApiVersion("1.0")]
 [Route("api/v{version:apiVersion}/[controller]s")]
