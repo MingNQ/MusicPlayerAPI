@@ -1,12 +1,15 @@
 using MusicPlayer.Api.Boostraping;
+using MusicPlayer.Core.Common;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
 
 // Add services to the container.
 builder.Services.AddApplicationServices();
 
 // Authentication and Authorization
-builder.Services.AddSecurityServices();
+builder.Services.AddSecurityServices(builder.Configuration);
 
 // Initial
 builder.Services.AddControllers();
@@ -34,6 +37,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

@@ -2,7 +2,6 @@
 
 public class LoginViewModel
 {
-    public string Username { get; set; } = string.Empty;
-    public string Password { get; set; } = string.Empty;
-    public bool RememberMe { get; set; } = false;
+    public required string Username { get; set; }
+    public required string Password { get; set; }
 }

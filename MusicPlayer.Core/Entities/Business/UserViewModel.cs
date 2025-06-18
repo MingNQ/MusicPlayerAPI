@@ -2,6 +2,7 @@
 
 public class UserViewModel
 {
+    public Guid Id { get; set; } = default!;
 }
 
 public class UserCreateViewModel

@@ -17,10 +17,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Common\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\MusicPlayer.Core\MusicPlayer.Core.csproj" />
     <ProjectReference Include="..\MusicPlayer.Infrastructure\MusicPlayer.Infrastructure.csproj" />
   </ItemGroup>
