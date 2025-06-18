@@ -36,7 +36,7 @@ public class AuthService : IAuthService
                 Error = new ErrorViewModel
                 {
                     Code = "LOGIN_ERROR",
-                    Message = "Incorrect username or password. Please check your credentials and try again."
+                    Message = result.Error?.Message ?? "An error occurred during login."
                 }
             };
         }
@@ -45,5 +45,34 @@ public class AuthService : IAuthService
     public async Task LogoutAsync()
     {
         await _authRepository.LogoutAsync();
+    }
+
+    public async Task<ResponseViewModel<UserViewModel>> RegisterAsync(string userName, string email, string? phoneNumber, string password)
+    {
+        var result = await _authRepository.RegisterAsync(userName, email, phoneNumber, password);
+
+        if (result.Success)
+        {
+            return new ResponseViewModel<UserViewModel>
+            {
+                Success = true,
+                Data = result.Data,
+                Message = "Registration successful."
+            };
+        }
+        else
+        {
+            // Handle registration failure, e.g., logging or throwing an exception
+            return new ResponseViewModel<UserViewModel>
+            {
+                Success = false,
+                Message = "Registration failed. Please check your input.",
+                Error = new ErrorViewModel
+                {
+                    Code = "REGISTRATION_ERROR",
+                    Message = result?.Error?.Message ?? "An error occurred during registration. Please try again."
+                }
+            };
+        }
     }
 }

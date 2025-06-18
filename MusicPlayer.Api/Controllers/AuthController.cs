@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using MusicPlayer.Core.Common;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -69,10 +68,47 @@ public class AuthController : ControllerBase
         return Ok(new { Message = "Logout successful." });
     }
 
+    [HttpPost("register")]
+    public async Task<IActionResult> Register([FromBody] RegisterViewModel model)
+    {
+        if (!ModelState.IsValid || model.Password != model.ConfirmPassword)
+        {
+            return BadRequest(new ResponseViewModel
+            {
+                Success = false,
+                Message = "Invalid input",
+                Error = new ErrorViewModel
+                {
+                    Code = "INPUT_VALIDATION_ERROR",
+                    Message = "Please check the input data."
+                }
+            });
+        }
+
+        var result = await _authService.RegisterAsync(model.UserName, model.Email, model.PhoneNumber, model.Password);
+
+        if (!result.Success)
+        {
+            _logger.LogWarning("Registration failed for user {Username}: {Message}", model.UserName, result.Message);
+            return BadRequest(result);
+        }
+
+        var token = GenerateToken(result);
+
+        _logger.LogInformation("User {Username} registered successfully.", model.UserName);
+
+        return Ok(new ResponseViewModel<AuthResultViewModel>
+        {
+            Success = true,
+            Data = token,
+            Message = "Registration successful."
+        });
+    }
+
     private AuthResultViewModel GenerateToken(ResponseViewModel<UserViewModel> result)
     {
         var jwtHandler = new JwtSecurityTokenHandler();
-        var key = Encoding.ASCII.GetBytes(_appSettings.JwtConfig.Secret);
+        var key = Encoding.ASCII.GetBytes(_appSettings.JwtConfig.Key);
 
         var claims = new[]
         {

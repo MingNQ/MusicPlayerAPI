@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
@@ -8,7 +9,8 @@ public static class SecurityExtensions
 {
     public static IServiceCollection AddSecurityServices(this IServiceCollection services, IConfiguration configuration)
     {
-        //services.AddIdentity<IdentityUser, IdentityRole>();
+        services.AddIdentity<IdentityUser, IdentityRole>()
+            .AddEntityFrameworkStores<MusicPlayerDbContext>();
 
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme,
@@ -20,9 +22,9 @@ public static class SecurityExtensions
                             ValidateAudience = true,
                             ValidateLifetime = true,
                             ValidateIssuerSigningKey = true,
-                            ValidIssuer = configuration["Jwt:Issuer"] ?? "",
-                            ValidAudience = configuration["Jwt:Audience"] ?? "",
-                            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("a-string-secret-at-least-256-bits-long"))
+                            ValidIssuer = configuration["AppSettings:JwtConfig:Issuer"] ?? "",
+                            ValidAudience = configuration["AppSettings:JwtConfig:Audience"] ?? "",
+                            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["AppSettings:JwtConfig:Key"] ?? ""))
                         };
 
                         options.Events = new JwtBearerEvents

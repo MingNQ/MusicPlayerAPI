@@ -1,8 +1,12 @@
-﻿namespace MusicPlayer.Api.Controllers;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+
+namespace MusicPlayer.Api.Controllers;
 
 [ApiVersion("1.0")]
 [Route("api/v{version:apiVersion}/[controller]s")]
 [ApiController]
+[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class ArtistController : ControllerBase
 {
     private readonly ILogger<ArtistController> _logger;

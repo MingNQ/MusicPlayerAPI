@@ -1,8 +1,11 @@
+using Microsoft.EntityFrameworkCore;
 using MusicPlayer.Api.Boostraping;
-using MusicPlayer.Core.Common;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var connectionString = builder.Configuration.GetConnectionString("SqlConnectionString") ?? throw new InvalidOperationException("Connection string not found.");
+builder.Services.AddDbContext<MusicPlayerDbContext>(options =>
+    options.UseSqlServer(connectionString));
 builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
 
 // Add services to the container.
