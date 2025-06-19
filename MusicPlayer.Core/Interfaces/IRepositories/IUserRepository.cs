@@ -1,6 +1,6 @@
 ﻿using MusicPlayer.Core.Entities.General;
 
-namespace MusicPlayer.Core.Interfaces;
+namespace MusicPlayer.Core.Interfaces.IRepositories;
 
 public interface IUserRepository
 {

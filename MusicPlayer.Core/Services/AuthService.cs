@@ -1,5 +1,5 @@
 ﻿using MusicPlayer.Core.Entities.Business;
-using MusicPlayer.Core.Interfaces;
+using MusicPlayer.Core.Interfaces.IRepositories;
 using MusicPlayer.Core.Interfaces.IServices;
 
 namespace MusicPlayer.Core.Services;

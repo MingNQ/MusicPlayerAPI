@@ -9,7 +9,7 @@ public static class SecurityExtensions
 {
     public static IServiceCollection AddSecurityServices(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddIdentity<IdentityUser, IdentityRole>()
+        services.AddIdentity<User, IdentityRole<Guid>>()
             .AddEntityFrameworkStores<MusicPlayerDbContext>();
 
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

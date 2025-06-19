@@ -1,6 +1,6 @@
 ﻿using MusicPlayer.Core.Entities.Business;
 
-namespace MusicPlayer.Core.Interfaces;
+namespace MusicPlayer.Core.Interfaces.IRepositories;
 
 public interface IAuthRepository
 {

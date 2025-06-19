@@ -93,14 +93,11 @@ public class AuthController : ControllerBase
             return BadRequest(result);
         }
 
-        var token = GenerateToken(result);
-
         _logger.LogInformation("User {Username} registered successfully.", model.UserName);
 
         return Ok(new ResponseViewModel<AuthResultViewModel>
         {
             Success = true,
-            Data = token,
             Message = "Registration successful."
         });
     }

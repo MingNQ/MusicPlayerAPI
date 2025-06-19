@@ -1,15 +1,16 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using MusicPlayer.Core.Entities.Business;
-using MusicPlayer.Core.Interfaces;
+using MusicPlayer.Core.Entities.General;
+using MusicPlayer.Core.Interfaces.IRepositories;
 
 namespace MusicPlayer.Infrastructure.Repositories;
 
 public class AuthRepository : IAuthRepository
 {
-    private readonly UserManager<IdentityUser> _userManager;
-    private readonly SignInManager<IdentityUser> _signInManager;
-
-    public AuthRepository(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+    private readonly UserManager<User> _userManager;
+    private readonly SignInManager<User> _signInManager;
+    
+    public AuthRepository(UserManager<User> userManager, SignInManager<User> signInManager)
     {
         _userManager = userManager;
         _signInManager = signInManager;
@@ -35,7 +36,7 @@ public class AuthRepository : IAuthRepository
                 Success = true,
                 Data = new UserViewModel 
                 {
-                    Id = Guid.Parse(user.Id),
+                    Id = user.Id.ToString(),
                     Username = user.UserName!,
                     Email = user.Email!,
                     PhoneNumber = user.PhoneNumber
@@ -80,11 +81,13 @@ public class AuthRepository : IAuthRepository
             };
         }
 
-        var identityUser = new IdentityUser
+        var identityUser = new User
         {
             UserName = userName,
             Email = email,
-            PhoneNumber = phoneNumber
+            PhoneNumber = phoneNumber,
+            CreatedAt = DateTime.UtcNow, 
+            IsActive = true,
         };
 
         var result = await _userManager.CreateAsync(identityUser, password);
@@ -96,7 +99,7 @@ public class AuthRepository : IAuthRepository
                 Success = true,
                 Data = new UserViewModel 
                 { 
-                    Id = Guid.NewGuid(),
+                    Id = Guid.NewGuid().ToString(),
                     Username = userName, 
                     Email = email, 
                     PhoneNumber = phoneNumber 

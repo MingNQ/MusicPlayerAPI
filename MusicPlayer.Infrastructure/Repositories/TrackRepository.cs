@@ -1,5 +1,5 @@
 ﻿using MusicPlayer.Core.Entities.General;
-using MusicPlayer.Core.Interfaces;
+using MusicPlayer.Core.Interfaces.IRepositories;
 
 namespace MusicPlayer.Infrastructure.Repositories;
 

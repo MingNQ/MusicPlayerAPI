@@ -1,4 +1,4 @@
-﻿using MusicPlayer.Core.Interfaces;
+﻿using MusicPlayer.Core.Interfaces.IRepositories;
 using MusicPlayer.Core.Services;
 using MusicPlayer.Infrastructure.Repositories;
 
