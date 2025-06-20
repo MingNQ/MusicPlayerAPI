@@ -1,4 +1,4 @@
-﻿namespace MusicPlayer.Api.Models;
+﻿namespace MusicPlayer.Core.Entities.Business;
 
 public class PaginationResponse<TEntity> (int pageIndex, int pageSize, long count, IEnumerable<TEntity> items)
 {

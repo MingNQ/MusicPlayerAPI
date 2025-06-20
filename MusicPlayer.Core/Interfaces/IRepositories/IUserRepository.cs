@@ -1,4 +1,6 @@
-﻿using MusicPlayer.Core.Entities.General;
+﻿using Microsoft.AspNetCore.Identity;
+using MusicPlayer.Core.Entities.Business;
+using MusicPlayer.Core.Entities.General;
 
 namespace MusicPlayer.Core.Interfaces.IRepositories;
 
@@ -6,7 +8,7 @@ public interface IUserRepository
 {
     Task<User?> GetUserByIdAsync(Guid userId);
     Task<IEnumerable<User>> GetUsersAsync(int page, int pageSize);
-    Task CreateUserAsync(User user);
-    Task UpdateUserAsync(User user);
-    Task DeleteUserAsync(Guid userId);
+    Task<IdentityResult> CreateUserAsync(UserCreateViewModel model);
+    Task<IdentityResult> UpdateUserAsync(UserUpdateViewModel model);
+    Task<IdentityResult> DeleteUserAsync(Guid userId);
 }

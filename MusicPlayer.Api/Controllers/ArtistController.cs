@@ -29,14 +29,9 @@ public class ArtistController : ControllerBase
     }
 
     [HttpGet]
-    public IActionResult GetArtists([AsParameters]PaginationRequest paginationRequest)
+    public IActionResult GetArtists()
     {
-        return Ok(new PaginationResponse<User>(
-             paginationRequest.Page,
-             paginationRequest.PageSize,
-             0,
-             []
-             ));
+        return Ok();
     }
 
     [HttpPost]

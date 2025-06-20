@@ -3,6 +3,10 @@
 GET {{MusicPlayer.Api_HostAddress}}/api/v1/users
 Accept: application/json
 
+{
+    ""
+}
+
 ###
 
 GET {{MusicPlayer.Api_HostAddress}}/api/v1/users/
