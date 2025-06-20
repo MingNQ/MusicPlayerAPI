@@ -111,7 +111,7 @@ public class UserController : ControllerBase
             {
                 _logger.LogError(ex, "An error occurred while creating user");
 
-                var errorResponse = new ResponseViewModel<UserViewModel>
+                var errorResponse = new ResponseViewModel
                 {
                     Success = false,
                     Message = "An error occurred while creating user.",
@@ -126,7 +126,7 @@ public class UserController : ControllerBase
             }
         }
 
-        return BadRequest(new ResponseViewModel<UserViewModel>
+        return BadRequest(new ResponseViewModel
         {
             Success = false,
             Message = "Invalid input data.",
@@ -162,7 +162,7 @@ public class UserController : ControllerBase
             catch (Exception ex)
             {
                 _logger.LogError(ex, "An error occurred while updating user");
-                var errorResponse = new ResponseViewModel<UserViewModel>
+                var errorResponse = new ResponseViewModel
                 {
                     Success = false,
                     Message = "An error occurred while updating user.",
@@ -176,7 +176,7 @@ public class UserController : ControllerBase
             }
         }
 
-        return BadRequest(new ResponseViewModel<UserViewModel>
+        return BadRequest(new ResponseViewModel
         {
             Success = false,
             Message = "Invalid input data.",
@@ -195,7 +195,7 @@ public class UserController : ControllerBase
         {
             await _userService.DeleteUserAsync(id);
 
-            var response = new ResponseViewModel<UserViewModel>
+            var response = new ResponseViewModel
             {
                 Success = true,
                 Message = "User deleted successfully."
@@ -206,7 +206,7 @@ public class UserController : ControllerBase
         catch (Exception ex)
         {
             _logger.LogError(ex, "An error occurred while deleting user");
-            var errorResponse = new ResponseViewModel<UserViewModel>
+            var errorResponse = new ResponseViewModel
             {
                 Success = false,
                 Message = "An error occurred while deleting user.",

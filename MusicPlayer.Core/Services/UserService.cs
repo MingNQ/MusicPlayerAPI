@@ -88,9 +88,9 @@ public class UserService : IUserService
             ProfileImageUrl = user.ProfileImageUrl,
             CreatedAt = user.CreatedAt,
             UpdatedAt = user.UpdatedAt ?? DateTime.MinValue,
-            Playlists = user.Playlists.Select(p => p.Name).ToList(),
-            Followers = user.Followers.Select(f => f.FollowerId.ToString()).ToList(),
-            Following = user.Following.Select(f => f.TargetId.ToString()).ToList()
+            Playlists = user.Playlists != null ? [.. user.Playlists.Select(p => p.Id.ToString())] : [],
+            Followers = user.Followers != null ? [.. user.Followers.Select(f => f.FollowerId.ToString())] : [],
+            Following = user.Following != null ? [.. user.Following.Select(f => f.TargetId.ToString())] : []
         });
 
         return new PaginationResponse<UserViewModel>(page, pageSize, users.LongCount(), userViewModels);
