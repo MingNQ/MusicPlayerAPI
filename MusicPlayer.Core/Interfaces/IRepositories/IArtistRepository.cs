@@ -1,12 +1,8 @@
-﻿using MusicPlayer.Core.Entities.General;
+﻿using MusicPlayer.Core.Entities.Business;
+using MusicPlayer.Core.Entities.General;
 
 namespace MusicPlayer.Core.Interfaces.IRepositories;
 
-public interface IArtistRepository
+public interface IArtistRepository : IBaseRepository<Artist>
 {
-    Task<Artist?> GetArtistByIdAsync(Guid artistId);
-    Task<IEnumerable<Artist>> GetArtistsAsync(int page, int pageSize);
-    Task CreateArtistAsync(Artist artist);
-    Task UpdateArtistAsync(Artist artist);
-    Task DeleteArtistAsync(Guid artistId);
 }

@@ -1,32 +1,12 @@
 ﻿using MusicPlayer.Core.Entities.General;
 using MusicPlayer.Core.Interfaces.IRepositories;
+using MusicPlayer.Infrastructure.Data;
 
 namespace MusicPlayer.Infrastructure.Repositories;
 
-public class ArtistRepository : IArtistRepository
+public class ArtistRepository: BaseRepository<Artist>, IArtistRepository
 {
-    public Task CreateArtistAsync(Artist artist)
+    public ArtistRepository(MusicPlayerDbContext dbContext) : base(dbContext)
     {
-        throw new NotImplementedException();
-    }
-
-    public Task DeleteArtistAsync(Guid artistId)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<Artist?> GetArtistByIdAsync(Guid artistId)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<IEnumerable<Artist>> GetArtistsAsync(int page, int pageSize)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task UpdateArtistAsync(Artist artist)
-    {
-        throw new NotImplementedException();
     }
 }

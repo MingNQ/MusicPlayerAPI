@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using System.Threading.Tasks;
 
 namespace MusicPlayer.Api.Controllers;
 
@@ -10,34 +11,147 @@ namespace MusicPlayer.Api.Controllers;
 public class ArtistController : ControllerBase
 {
     private readonly ILogger<ArtistController> _logger;
+    private readonly IArtistService _artistService;
 
-    public ArtistController(ILogger<ArtistController> logger)
+    public ArtistController(ILogger<ArtistController> logger, IArtistService artistService)
     {
         _logger = logger;
+        _artistService = artistService;
     }
 
     [HttpGet("{id}")]
-    public IActionResult GetArtistProfile(Guid id)
+    public async Task<IActionResult> GetArtistProfile(Guid id)
     {
-        return Ok("Called");
+        var artist = await _artistService.GetArtistByIdAsync(id);
+        if (artist == null)
+        {
+            return NotFound(new ResponseViewModel<ArtistViewModel>
+            {
+                Success = false,
+                Message = "Artist not found."
+            });
+        }
+
+        var response = new ResponseViewModel<ArtistViewModel>
+        {
+            Success = true,
+            Message = "Artist profile retrieved successfully.",
+            Data = artist
+        };
+
+        return Ok(response);
     }
 
     [HttpPut("{id}")]
-    public IActionResult UpdateArtist(Guid id, ArtistUpdateViewModel model)
+    public async Task<IActionResult> UpdateArtist(Guid id, ArtistUpdateViewModel model)
     {
-        return Ok("Called");
+        if (ModelState.IsValid)
+        {
+            try
+            {
+                await _artistService.UpdateArtistAsync(id, model);
+
+                return Ok(new ResponseViewModel<ArtistViewModel>
+                {
+                    Success = true,
+                    Message = "Artist updated successfully."
+                });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while updating the artist.");
+                return StatusCode(StatusCodes.Status500InternalServerError, new ResponseViewModel<ArtistViewModel>
+                {
+                    Success = false,
+                    Message = "An error occurred while updating the artist.",
+                    Error = new ErrorViewModel
+                    {
+                        Code = "ERROR_CODE",
+                        Message = ex.Message
+                    }
+                });
+            }
+        }
+
+        return BadRequest(new ResponseViewModel<ArtistViewModel>
+        {
+            Success = false,
+            Message = "Invalid model state.",
+            Error = new ErrorViewModel
+            {
+                Code = "INVALID_MODEL",
+                Message = "The provided model is invalid."
+            }
+        });
     }
 
     [HttpGet]
-    public IActionResult GetArtists()
+    public async Task<IActionResult> GetArtists(int? page, int? pageSize)
     {
-        return Ok();
+        var result = await _artistService.GetArtistsAsync(page ?? 1, pageSize ?? 10);
+
+        if (result == null || !result.Items.Any())
+        {
+            return NotFound(new ResponseViewModel<PaginationResponse<ArtistViewModel>>
+            {
+                Success = false,
+                Message = "No artists found."
+            });
+        }
+
+        var response = new ResponseViewModel<PaginationResponse<ArtistViewModel>>
+        {
+            Success = true,
+            Message = "Artists retrieved successfully.",
+            Data = result
+        };
+
+        return Ok(response);
     }
 
     [HttpPost]
-    public IActionResult CreateArtist(ArtistCreateViewModel model)
+    public async Task<IActionResult> CreateArtist(ArtistCreateViewModel model)
     {
-        return Ok("Called");
+        if (ModelState.IsValid)
+        {
+            try
+            {
+                var result = await _artistService.CreateArtistAsync(model);
+                var response = new ResponseViewModel<ArtistViewModel>
+                {
+                    Success = true,
+                    Message = "Artist created successfully.",
+                    Data = result
+                };
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while creating the artist.");
+                return StatusCode(StatusCodes.Status500InternalServerError, new ResponseViewModel<ArtistViewModel>
+                {
+                    Success = false,
+                    Message = "An error occurred while creating the artist.",
+                    Error = new ErrorViewModel
+                    {
+                        Code = "ERROR_CODE",
+                        Message = ex.Message
+                    }
+                });
+            }
+        }
+
+        return BadRequest(new ResponseViewModel<ArtistViewModel>
+        {
+            Success = false,
+            Message = "Invalid model state.",
+            Error = new ErrorViewModel
+            {
+                Code = "INVALID_MODEL",
+                Message = "The provided model is invalid."
+            }
+        });
     }
 
     [Route("{id}/albums")]

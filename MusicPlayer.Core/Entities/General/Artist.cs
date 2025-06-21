@@ -7,6 +7,8 @@ public class Artist
     public string? ImageUrl { get; set; } = default!;
     public int Popularity { get; set; }
     public bool IsActive { get; set; }
+    public DateTime? CreatedAt { get; set; }
+    public DateTime? UpdatedAt { get; set; }
     public ICollection<Follow> Followers { get; set; } = [];
     public ICollection<Album> Albums { get; set; } = [];
     public ICollection<Track> Tracks { get; set; } = [];
