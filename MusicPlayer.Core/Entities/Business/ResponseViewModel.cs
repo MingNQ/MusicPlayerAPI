@@ -8,7 +8,6 @@ public class ResponseViewModel<T>
     public ErrorViewModel? Error { get; set; }
 }
 
-
 public class ResponseViewModel
 {
     public bool Success { get; set; }
