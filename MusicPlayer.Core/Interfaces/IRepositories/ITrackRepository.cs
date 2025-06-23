@@ -2,11 +2,6 @@
 
 namespace MusicPlayer.Core.Interfaces.IRepositories;
 
-public interface ITrackRepository
+public interface ITrackRepository : IBaseRepository<Track>
 {
-    Task<Track?> GetTrackByIdAsync(Guid trackId);
-    Task<IEnumerable<Track>> GetTracksAsync(int page, int pageSize);
-    Task CreateTrackAsync(Track track);
-    Task UpdateTrackAsync(Track track);
-    Task DeleteTrackAsync(Guid trackId);
 }

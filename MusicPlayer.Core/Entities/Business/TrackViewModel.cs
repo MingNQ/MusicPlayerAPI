@@ -10,14 +10,33 @@ public class TrackViewModel
     public int Duration { get; set; }
     public string Genre { get; set; } = default!;
     public string? CoverImageUrl { get; set; }
-    public List<string> Artist { get; set; } = [];
-    public List<string> Playlists { get; set; } = [];
+    public DateTime? CreatedAt { get; set; }
+    public DateTime? UpdatedAt { get; set; }
+    public List<ArtistViewModel> Artist { get; set; } = [];
 }
 
 public class TrackCreateViewModel
 {
+    public string Name { get; set; } = default!;
+    public string Album { get; set; } = default!;
+    public int Popularity { get; set; }
+    public int TrackNumber { get; set; }
+    public int Duration { get; set; }
+    public string Genre { get; set; } = default!;
+    public string? CoverImageUrl { get; set; }
+    public DateTime? CreatedAt { get; set; }
+    public List<ArtistViewModel> Artist { get; set; } = [];
 }
 
 public class TrackUpdateViewModel
 {
+    public string Name { get; set; } = default!;
+    public string Album { get; set; } = default!;
+    public int Popularity { get; set; }
+    public int TrackNumber { get; set; }
+    public int Duration { get; set; }
+    public string Genre { get; set; } = default!;
+    public string? CoverImageUrl { get; set; }
+    public DateTime? UpdatedAt { get; set; }
+    public List<ArtistViewModel> Artist { get; set; } = [];
 }
