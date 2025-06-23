@@ -11,4 +11,5 @@ public interface IArtistService
     Task UpdateArtistAsync(Guid modelId, ArtistUpdateViewModel model);
     Task DeleteArtistAsync(Guid artistId);
     Task<IEnumerable<Track>> GetTopTracks(Guid artistId, int? top);
+    Task<PaginationResponse<AlbumViewModel>> GetAlbumByArtistIdAsync(Guid artistId);
 }

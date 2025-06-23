@@ -8,7 +8,7 @@ public class Track
     public int TrackNumber { get; set; }
     public int Duration { get; set; }
     public string Genre { get; set; } = default!;
-    public string CoverImageUrl { get; set; } = default!;
+    public string? CoverImageUrl { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime? UpdatedAt { get; set; }
     public ICollection<PlaylistTrack> PlaylistTracks { get; set; } = [];

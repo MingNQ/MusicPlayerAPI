@@ -11,10 +11,12 @@ public static class ApplicationServiceExtensions
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IArtistService, ArtistService>();
+        services.AddScoped<IAlbumService, AlbumService>();
 
         services.AddTransient<IAuthRepository, AuthRepository>();
         services.AddTransient<IUserRepository, UserRepository>();
         services.AddTransient<IArtistRepository, ArtistRepository>();
+        services.AddTransient<IAlbumRepository, AlbumRepository>();
 
         return services;
     }

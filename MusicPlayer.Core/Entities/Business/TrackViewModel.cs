@@ -9,7 +9,7 @@ public class TrackViewModel
     public int TrackNumber { get; set; }
     public int Duration { get; set; }
     public string Genre { get; set; } = default!;
-    public string CoverImageUrl { get; set; } = default!;
+    public string? CoverImageUrl { get; set; }
     public List<string> Artist { get; set; } = [];
     public List<string> Playlists { get; set; } = [];
 }

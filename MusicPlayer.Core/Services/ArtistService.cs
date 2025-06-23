@@ -104,21 +104,18 @@ public class ArtistService : IArtistService
     public async Task UpdateArtistAsync(Guid modelId, ArtistUpdateViewModel model)
     {
         var existingArtist = await _artistRepository.GetByIdAsync(modelId);
-        
-        var mappedArtist = new Artist
-        {
-            Id = existingArtist.Id,
-            Name = model.Name,
-            ImageUrl = model.ImageUrl ?? existingArtist.ImageUrl,
-            Popularity = model.Popularity,
-            Followers = existingArtist.Followers, // Assuming followers are not updated here
-            Albums = existingArtist.Albums, // Assuming albums are not updated here
-            Tracks = existingArtist.Tracks, // Assuming tracks are not updated here
-            CreatedAt = existingArtist.CreatedAt,
-            UpdatedAt = DateTime.UtcNow
-        };
 
-        await _artistRepository.UpdateAsync(mappedArtist);
+        if (existingArtist == null)
+        {
+            throw new KeyNotFoundException($"Artist with ID {modelId} not found.");
+        }
+
+        existingArtist.Name = model.Name;
+        existingArtist.ImageUrl = model.ImageUrl ?? existingArtist.ImageUrl; // Keep existing image if not provided
+        existingArtist.Popularity = model.Popularity;
+        existingArtist.UpdatedAt = DateTime.UtcNow;
+
+        await _artistRepository.UpdateAsync(existingArtist);
     }
 
     public async Task<IEnumerable<Track>> GetTopTracks(Guid artistId, int? top)
@@ -134,5 +131,29 @@ public class ArtistService : IArtistService
         return [.. result.Tracks
             .OrderByDescending(t => t.Popularity)
             .Take(topValue)]; // Assuming Tracks is a collection of Track entities with Popularity property
+    }
+
+    public async Task<PaginationResponse<AlbumViewModel>> GetAlbumByArtistIdAsync(Guid artistId)
+    {
+        var existingArtist = await _artistRepository.GetByIdAsync(artistId);
+        if (existingArtist == null)
+        {
+            throw new KeyNotFoundException($"Artist with ID {artistId} not found.");
+        }
+        
+        return new PaginationResponse<AlbumViewModel>(
+            0, 0, existingArtist.Albums.LongCount(),
+            items: existingArtist.Albums.Select(a => new AlbumViewModel
+            {
+                Id = a.Id.ToString(),
+                Name = a.Name,
+                CoverImageUrl = a.CoverImageUrl ?? "",
+                Popularity = a.Popularity,
+                ReleaseDate = a.ReleaseDate,
+                AlbumType = a.AlbumType,
+                TotalTracks = a.TotalTracks,
+                //Tracks = [.. a.Tracks.Select(t => t.Name)],
+                //Artist = [.. a.Artist.Select(ar => ar.Name)]
+            }));
     }
 }

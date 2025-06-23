@@ -6,7 +6,7 @@ public class Album
 {
     public Guid Id { get; set; } = default!;
     public string Name { get; set; } = default!;
-    public string CoverImageUrl { get; set; } = default!;
+    public string? CoverImageUrl { get; set; }
     public int Popularity { get; set; }
     public DateTime ReleaseDate { get; set; }
     public AlbumType AlbumType { get; set; } = default!;

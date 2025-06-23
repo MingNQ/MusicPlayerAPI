@@ -1,32 +1,41 @@
 ﻿using MusicPlayer.Core.Entities.General;
 using MusicPlayer.Core.Interfaces.IRepositories;
+using MusicPlayer.Infrastructure.Data;
 
 namespace MusicPlayer.Infrastructure.Repositories;
 
-public class AlbumRepository : IAlbumRepository
+public class AlbumRepository : BaseRepository<Album>, IAlbumRepository
 {
-    public Task CreateAlbumAsync(Album album)
+    public AlbumRepository(MusicPlayerDbContext dbContext) : base(dbContext)
     {
-        throw new NotImplementedException();
     }
 
-    public Task DeleteAlbumAsync(Guid albumId)
+    public async Task<Album> CreateAlbumAsync(Album model)
     {
-        throw new NotImplementedException();
-    }
+        foreach (var track in model.Tracks)
+        {
+            var existingTrack = await _dbContext.Tracks.FindAsync(track.Id);
+            if (existingTrack == null)
+            {
+                track.Id = Guid.NewGuid();
+            }
+            
+            await _dbContext.Tracks.AddAsync(track);
+        }
 
-    public Task<Album?> GetAlbumByIdAsync(Guid albumId)
-    {
-        throw new NotImplementedException();
-    }
+        foreach (var artist in model.Artist)
+        {
+            var existingArtist = await _dbContext.Artists.FindAsync(artist.Id);
+            if (existingArtist == null)
+            {
+                artist.Id = Guid.NewGuid();
+            }
 
-    public Task<IEnumerable<Album>> GetAlbumsAsync(int page, int pageSize)
-    {
-        throw new NotImplementedException();
-    }
+            await _dbContext.Artists.AddAsync(artist);
+        }
 
-    public Task UpdateAlbumAsync(Album album)
-    {
-        throw new NotImplementedException();
+        await _dbContext.Albums.AddAsync(model);
+
+        return model;
     }
 }

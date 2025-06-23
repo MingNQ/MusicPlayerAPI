@@ -2,11 +2,7 @@
 
 namespace MusicPlayer.Core.Interfaces.IRepositories;
 
-public interface IAlbumRepository
+public interface IAlbumRepository : IBaseRepository<Album>
 {
-    Task<Album?> GetAlbumByIdAsync(Guid albumId);
-    Task<IEnumerable<Album>> GetAlbumsAsync(int page, int pageSize);
-    Task CreateAlbumAsync(Album album);
-    Task UpdateAlbumAsync(Album album);
-    Task DeleteAlbumAsync(Guid albumId);
+    Task<Album> CreateAlbumAsync(Album model);
 }
